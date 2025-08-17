@@ -4,7 +4,7 @@ import { Button } from "../components/ui/Button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/Dialog"
 import { Settings, BookOpen, Play } from "lucide-react"
 
-// Sound file (place in /public/sound/click.mp3)
+// Sound file (place in /public/click.mp3)
 const clickSound = new Audio("./click.mp3")
 
 export default function Menu() {
