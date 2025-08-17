@@ -3,30 +3,22 @@ import { motion } from "framer-motion"
 import { Button } from "../components/ui/Button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/Dialog"
 import { Settings, BookOpen, Play } from "lucide-react"
-
-// Sound file (place in /public/click.mp3)
-const clickSound = new Audio("./click.mp3")
+import { useSound } from "../context/SoundContext" // global sound state
 
 export default function Menu() {
   const [openSettings, setOpenSettings] = useState(false)
   const [openInstructions, setOpenInstructions] = useState(false)
-  const [soundOn, setSoundOn] = useState(true)
 
-  const playSound = () => {
-    if (soundOn) {
-      clickSound.currentTime = 0
-      clickSound.play()
-    }
-  }
+  const { soundOn, setSoundOn, playSound } = useSound()
 
   return (
     <div className="h-screen w-screen flex items-center justify-center relative overflow-hidden">
       
       {/* Background Image */}
       <div 
- className="absolute inset-0 w-full h-full bg-cover bg-center sm:bg-contain blur-sm opacity-90"
-      style={{ backgroundImage: "url('/image1.png')" }}
-   />
+        className="absolute inset-0 w-full h-full bg-cover bg-center sm:bg-contain blur-sm opacity-90"
+        style={{ backgroundImage: "url('/image1.png')" }}
+      />
 
       {/* Overlay for readability */}
       <div className="absolute inset-0 bg-black/40" />
@@ -89,8 +81,12 @@ export default function Menu() {
               <span className="text-lg text-yellow-900 font-semibold">Sound</span>
               <Button
                 onClick={() => {
-                  setSoundOn(!soundOn)
-                  playSound()
+                  if (soundOn) {
+                    setSoundOn(false) // mute globally
+                  } else {
+                    setSoundOn(true)
+                    playSound() // confirm ON
+                  }
                 }}
                 className="rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-bold"
               >
