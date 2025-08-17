@@ -11,7 +11,11 @@ export default function SettingsModal({ onClose }) {
         <div className="space-y-4 text-lg">
           <label className="flex justify-between items-center">
             <span>Sound</span>
-            <input type="checkbox" checked={sound} onChange={() => setSound(!sound)} />
+            <input
+              type="checkbox"
+              checked={sound}
+              onChange={() => setSound(!sound)}
+            />
           </label>
           <label className="flex justify-between items-center">
             <span>Difficulty</span>

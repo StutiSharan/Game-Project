@@ -17,7 +17,7 @@ export function Dialog({ open, onOpenChange, children }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0fixed inset-0 flex items-center justify-center backdrop-blur-sm z-20 flex items-center justify-center z-50"
       onClick={() => {
         playClick();
         onOpenChange(false);
@@ -48,7 +48,9 @@ export function Dialog({ open, onOpenChange, children }) {
 
 // ✅ Extra helpers for consistency with your imports
 export function DialogHeader({ children }) {
-  return <div className="mb-4 text-2xl font-bold text-gray-800">{children}</div>;
+  return (
+    <div className="mb-4 text-2xl font-bold text-gray-800">{children}</div>
+  );
 }
 
 export function DialogTitle({ children }) {
