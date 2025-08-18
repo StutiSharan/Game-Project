@@ -171,10 +171,10 @@ export default function Menu() {
   // Handle Play button → show loading first
   const handlePlay = () => {
     playSound();
-    setScreen("loading");
+  
     setTimeout(() => {
       setScreen("game"); // after 2s (simulate loading), go to Game
-    }, 2000);
+    }, 300);
   };
 
   // Screen switching
