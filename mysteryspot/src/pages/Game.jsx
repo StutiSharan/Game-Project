@@ -732,12 +732,12 @@ export default function Game({ onQuit }) {
             {console.log(
               username,
               level,
-              score,
+              score+timeLeft,
               levelSettings[level].time - timeLeft
             )}
           </p>
           <p className="text-yellow-200 text-lg md:text-2xl font-bold mb-8">
-            {username}, your score: ⭐ {score} pts
+            {username}, your score: ⭐ {score+timeLeft} pts
           </p>
           <div className="flex gap-4">
             <Button
