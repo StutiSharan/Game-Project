@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
-body, html, #root {
+body,
+html,
+#root {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
+}
+/* neon glow for GAME OVER text */
+@keyframes neonPulse {
+  0%,
+  100% {
+    text-shadow: 0 0 6px #ff3b3b, 0 0 18px #ff3b3b;
+  }
+  50% {
+    text-shadow: 0 0 12px #ff6b6b, 0 0 30px #ff6b6b;
+  }
+}
+.neon {
+  animation: neonPulse 1.4s ease-in-out infinite;
 }
