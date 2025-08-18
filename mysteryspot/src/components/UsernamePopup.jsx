@@ -1,16 +1,16 @@
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function UsernamePopup({ onSubmit }) {
-  const [inputValue, setInputValue] = useState("")
+  const [inputValue, setInputValue] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (inputValue.trim() !== "") {
-      localStorage.setItem("username", inputValue) // ✅ Save username to localStorage
-      onSubmit(inputValue) // Pass username back to parent
+      localStorage.setItem("username", inputValue); // ✅ Save username to localStorage
+      onSubmit(inputValue); // Pass username back to parent
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -51,5 +51,5 @@ export default function UsernamePopup({ onSubmit }) {
         </form>
       </motion.div>
     </div>
-  )
+  );
 }

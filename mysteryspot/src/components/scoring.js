@@ -1,0 +1,30 @@
+import { db } from "./firebase"; // your firebase config
+import { doc, setDoc, getDoc } from "firebase/firestore";
+
+// Save or Update Best Score
+export async function saveBestScore(username, level, newScore) {
+  try {
+    const scoreRef = doc(db, "users", username, "scores", level);
+
+    // get current score
+    const scoreSnap = await getDoc(scoreRef);
+
+    if (scoreSnap.exists()) {
+      const currentBest = scoreSnap.data().bestScore;
+
+      // update only if new score is higher
+      if (newScore > currentBest) {
+        await setDoc(scoreRef, { bestScore: newScore }, { merge: true });
+        console.log("✅ Best score updated!");
+      } else {
+        console.log("⚡ Not higher than current best, no update.");
+      }
+    } else {
+      // if score does not exist, create new
+      await setDoc(scoreRef, { bestScore: newScore });
+      console.log("✅ New score saved!");
+    }
+  } catch (error) {
+    console.error("Error saving score:", error);
+  }
+}

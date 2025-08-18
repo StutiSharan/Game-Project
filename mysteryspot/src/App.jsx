@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import LoadingPage from "./pages/LoadingPage"
 import MenuPage from "./pages/MenuPage"
 import UsernamePopup from "./components/UsernamePopup"
@@ -8,6 +8,14 @@ export default function App() {
   const [username, setUsername] = useState(null)
   const [showLoading, setShowLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    const savedName = (localStorage.getItem("username"));
+    if (savedName) {
+      setUsername(savedName);
+      setShowLoading(true)
+    }
+  }, []);
 
   if (!username) {
     return (
