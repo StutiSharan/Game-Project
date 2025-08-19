@@ -20,7 +20,7 @@ Mystery Spot is an interactive hidden object game where players can test their o
 
 - **Frontend**: React + Vite + Tailwind CSS  
 - **Backend/Database**: Firebase Firestore  
-- **Auth & Storage**: Firebase Authentication & Firestore Storage  
+- **Storage**: Firestore Storage  
 - **Styling**: TailwindCSS with animations  
 
 ---
