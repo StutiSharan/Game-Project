@@ -348,7 +348,7 @@ export default function Game({ onQuit }) {
           {/* ✅ Responsive Game Area */}
           <div className="flex flex-col md:flex-row gap-3 w-full h-[87vh] max-w-6xl mx-auto">
             {/* 🎯 Clue Name Box */}
-            <div className="bg-black/50 text-yellow-200 rounded-xl p-3 w-40 overflow-y-auto">
+            {/* <div className="bg-black/50 text-yellow-200 rounded-xl p-3 w-40 overflow-y-auto">
               <h3 className="text-lg font-bold mb-3">🔍 Objects to Find</h3>
               <ul className="space-y-2">
                 {clues.map((clue) => (
@@ -357,6 +357,28 @@ export default function Game({ onQuit }) {
                     className={`flex items-center gap-2 ${
                       clue.found ? "line-through text-green-400" : ""
                     }`}
+                  >
+                    {clue.found ? "✅" : "⭕"} {clue.name || "Unknown"}
+                  </li>
+                ))}
+              </ul>
+            </div> */}
+
+            <div className="bg-black/50 text-yellow-200 rounded-xl p-3 w-full md:w-40 overflow-x-auto md:overflow-y-autoflex md:block">
+              <h3 className="hidden md:block text-lg font-bold mb-3">
+                🔍 Objects to Find
+              </h3>
+
+              <ul className="flex md:block gap-3 md:gap-2 flex-wrap md:flex-nowrap text-sm md:text-base">
+                {clues.map((clue) => (
+                  <li
+                    key={clue.id}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-lg 
+          ${
+            clue.found
+              ? "line-through text-green-400 bg-green-900/40"
+              : "text-yellow-200 bg-yellow-900/40"
+          }`}
                   >
                     {clue.found ? "✅" : "⭕"} {clue.name || "Unknown"}
                   </li>
