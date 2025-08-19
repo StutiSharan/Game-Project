@@ -1,7 +1,11 @@
-import { useState,useEffect } from "react"
+
+
+import { useState, useEffect } from "react"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import LoadingPage from "./pages/LoadingPage"
 import MenuPage from "./pages/MenuPage"
 import UsernamePopup from "./components/UsernamePopup"
+import GameOver from "./pages/GameOverPage"   // <-- import GameOver page
 import { SoundProvider } from "./context/SoundContext"
 
 export default function App() {
@@ -10,7 +14,7 @@ export default function App() {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    const savedName = (localStorage.getItem("username"));
+    const savedName = localStorage.getItem("username");
     if (savedName) {
       setUsername(savedName);
       setShowLoading(true)
@@ -21,9 +25,9 @@ export default function App() {
     return (
       <UsernamePopup
         onSubmit={(name) => {
-          localStorage.setItem("username", name) // save only on submit
+          localStorage.setItem("username", name)
           setUsername(name)
-          setShowLoading(true) // then move to loading
+          setShowLoading(true)
         }}
       />
     )
@@ -34,9 +38,13 @@ export default function App() {
       {showLoading && !loaded ? (
         <LoadingPage onFinish={() => setLoaded(true)} />
       ) : loaded ? (
-        <MenuPage />
+        
+          <Routes>
+            <Route path="/" element={<MenuPage />} />
+            <Route path="/gameover" element={<GameOver />} /> {/* GameOver route */}
+          </Routes>
+        
       ) : null}
     </SoundProvider>
   )
-
 }

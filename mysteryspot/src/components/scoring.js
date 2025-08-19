@@ -15,10 +15,10 @@ export async function saveBestScore(username, level, newScore, time) {
       if (newScore > currentBest) {
         await setDoc(
           scoreRef,
-          { 
+          {
             bestScore: newScore,
             bestTime: time, // ⏱️ also save time with new best score
-            updatedAt: new Date().toISOString() // optional timestamp
+            updatedAt: new Date().toISOString(), // optional timestamp
           },
           { merge: true }
         );
@@ -28,10 +28,10 @@ export async function saveBestScore(username, level, newScore, time) {
       }
     } else {
       // if score does not exist, create new
-      await setDoc(scoreRef, { 
-        bestScore: newScore, 
+      await setDoc(scoreRef, {
+        bestScore: newScore,
         bestTime: time,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
       console.log("✅ New score & time saved!");
     }

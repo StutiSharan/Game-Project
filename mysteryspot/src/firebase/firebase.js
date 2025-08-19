@@ -23,7 +23,7 @@ const firebaseConfig = {
   storageBucket: "game-project-a8094.firebasestorage.app",
   messagingSenderId: "429071829765",
   appId: "1:429071829765:web:b6b0a590c645b5d4d2456c",
-  measurementId: "G-ZX2SBG80NQ"
+  measurementId: "G-ZX2SBG80NQ",
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
