@@ -50,12 +50,13 @@ Mystery Spot is an interactive hidden object game where players can test their o
 
 ## Screenshots
 ### Loading
-![Username Popup](public/Loading.png)
+![Username Popup](public/loading.png)
+
 ### Username Popup 
 ![Username Popup](public/username.png)
 
 ### Game Play (Medium Level)  
-![Game Play](public/GamingDashboard.png)
+![Game Play](public/gamingDashboard.png)
 
 ### Game Over Screen  
 ![Game Over](public/gameover.png)
