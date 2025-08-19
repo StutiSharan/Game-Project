@@ -29,8 +29,8 @@ Mystery Spot is an interactive hidden object game where players can test their o
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/your-username/mystery-spot.git
-   cd mystery-spot
+   git clone https://github.com/StutiSharan/Game-Project
+   cd Game-Project
 
 ## 📌 Gameplay Flow  
 
@@ -50,7 +50,7 @@ Mystery Spot is an interactive hidden object game where players can test their o
 
 ## Screenshots
 ### Loading
-![Loading](public/loading.png)
+![Loading](Game-Project/loading.png)
 
 ### Username Popup 
 ![Username Popup](public/username.png)
