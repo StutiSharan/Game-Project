@@ -72,7 +72,7 @@ Thanks goes to these amazing people who contributed to this project:
 |------|--------|------|
 | Stuti Sharan | [@StutiSharan](https://github.com/StutiSharan) | Team Lead Frontend development|
 | Anjali Sharma | [@AnjaliSharma2212](https://github.com/AnjaliSharma2212) | Frontend + Backend development|
-| Yash Bisht | [@yash-bisht711](https://github.com/yash-bisht711) | UI/UX, Game Dashboard |
+| Yash Bisht | [@yash-bisht711](https://github.com/yash-bisht711) | UI/UX, Game Dashboard & mechanics |
 | Shrutika Gadekar | [Gadekar2003](https://github.com/Gadekar2003) | Frontend development |
 
 
