@@ -64,6 +64,9 @@ Mystery Spot is an interactive hidden object game where players can test their o
 ### Leaderboard Page  
 ![Leaderboard](/leader.png)
 
+### Deployed link
+(https://mysteryspot.netlify.app/)
+
 ## 👥 Contributors  
 
 Thanks goes to these amazing people who contributed to this project:  
