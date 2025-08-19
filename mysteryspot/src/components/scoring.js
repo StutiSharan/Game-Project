@@ -7,7 +7,7 @@ export async function saveBestScore(username, level, newScore, time) {
 
     // get current score
     const scoreSnap = await getDoc(scoreRef);
-
+    console.log(scoreRef);
     if (scoreSnap.exists()) {
       const currentBest = scoreSnap.data().bestScore || 0;
 

@@ -19,6 +19,7 @@ import clickSoundFile from "../sounds/mixkit-fast-double-click-on-mouse-275.wav"
 import lvlSelect from "../sounds/mixkit-sci-fi-click-900.wav";
 import successSoundFile from "../sounds/claps-29454.mp3";
 import failSoundFile from "../sounds/whoosh-cinematic-sound-effect-376889.mp3";
+import Leaderboard from "./LeaderBoard";
 
 export default function Game({ onQuit }) {
   const [level, setLevel] = useState(null);
@@ -32,6 +33,10 @@ export default function Game({ onQuit }) {
   const [score, setScore] = useState(0);
 
   const imgRef = useRef(null);
+  const [showLeaderboard, setShowLeaderboard] = useState({
+    open: false,
+    autoClose: false,
+  });
 
   // 🎵 Sounds
   const landingMusic = new Howl({
@@ -54,6 +59,10 @@ export default function Game({ onQuit }) {
     hard: { clues: 5, time: 120, bg: hardBg, hints: 3 },
   };
 
+  //leaderboard show
+  const handleLeaderboard = () => {
+    setShowLeaderboard(true);
+  };
   // Load username
   useEffect(() => {
     const savedName = localStorage.getItem("username");
@@ -172,7 +181,8 @@ export default function Game({ onQuit }) {
 
     if (username && level) {
       const timeTaken = levelSettings[level].time - timeLeft;
-      saveBestScore(username, level, score, timeTaken);
+      const finalScore = score + timeLeft; // ✅ add time bonus
+      saveBestScore(username, level, finalScore, timeTaken);
     }
   };
 
@@ -276,42 +286,86 @@ export default function Game({ onQuit }) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               className="absolute top-20 left-1/2 transform -translate-x-1/2 
-                         bg-yellow-200 text-black px-6 py-3 rounded-lg shadow-lg 
-                         font-bold text-lg z-30"
+                   bg-yellow-200 text-black px-6 py-3 rounded-lg shadow-lg 
+                   font-bold text-lg z-30"
             >
               💡 Hint: {activeHint}
             </motion.div>
           )}
 
-          {/* Game Scene */}
-          <div className="relative w-full max-w-6xl h-[87vh] mx-auto aspect-[16/9]">
-            <img
-              ref={imgRef}
-              src={levelSettings[level].bg}
-              alt="scene"
-              className="absolute inset-0 w-full h-full object-contain cursor-crosshair"
-              onClick={handleClick}
-            />
-            {clues.map((clue) => {
-              const img = imgRef.current;
-              let top = 0,
-                left = 0;
-              if (img) {
-                const rect = img.getBoundingClientRect();
-                top = (clue.yPercent / 100) * rect.height;
-                left = (clue.xPercent / 100) * rect.width;
-              }
-              return (
-                <motion.div
-                  key={clue.id}
-                  className="absolute w-6 h-6 md:w-10 md:h-10 rounded-full"
-                  style={{ top, left }}
-                  animate={activeHint === clue.id ? { scale: [1, 1.5, 1] } : {}}
-                >
-                  {clue.found ? "✅" : ""}
-                </motion.div>
-              );
-            })}
+          {/* ✅ Responsive Game Area */}
+          <div className="flex flex-col md:flex-row gap-3 w-full h-[87vh] max-w-6xl mx-auto">
+            {/* 🎯 Clue Name Box */}
+            {/* <div className="bg-black/50 text-yellow-200 rounded-xl p-3 w-40 overflow-y-auto">
+              <h3 className="text-lg font-bold mb-3">🔍 Objects to Find</h3>
+              <ul className="space-y-2">
+                {clues.map((clue) => (
+                  <li
+                    key={clue.id}
+                    className={`flex items-center gap-2 ${
+                      clue.found ? "line-through text-green-400" : ""
+                    }`}
+                  >
+                    {clue.found ? "✅" : "⭕"} {clue.name || "Unknown"}
+                  </li>
+                ))}
+              </ul>
+            </div> */}
+
+            <div className="bg-black/50 text-yellow-200 rounded-xl p-3 w-full md:w-40 overflow-x-auto md:overflow-y-autoflex md:block">
+              <h3 className="hidden md:block text-lg font-bold mb-3">
+                🔍 Objects to Find
+              </h3>
+
+              <ul className="flex md:block gap-3 md:gap-2 flex-wrap md:flex-nowrap text-sm md:text-base">
+                {clues.map((clue) => (
+                  <li
+                    key={clue.id}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-lg 
+          ${
+            clue.found
+              ? "line-through text-green-400 bg-green-900/40"
+              : "text-yellow-200 bg-yellow-900/40"
+          }`}
+                  >
+                    {clue.found ? "✅" : "⭕"} {clue.name || "Unknown"}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* 🎯 Game Scene */}
+            <div className="relative flex-1 h-full aspect-[16/9]">
+              <img
+                ref={imgRef}
+                src={levelSettings[level].bg}
+                alt="scene"
+                className="absolute inset-0 w-full h-full object-contain cursor-crosshair"
+                onClick={handleClick}
+              />
+              {clues.map((clue) => {
+                const img = imgRef.current;
+                let top = 0,
+                  left = 0;
+                if (img) {
+                  const rect = img.getBoundingClientRect();
+                  top = (clue.yPercent / 100) * rect.height;
+                  left = (clue.xPercent / 100) * rect.width;
+                }
+                return (
+                  <motion.div
+                    key={clue.id}
+                    className="absolute w-6 h-6 md:w-7 md:h-7 rounded-full"
+                    style={{ top, left }}
+                    animate={
+                      activeHint === clue.id ? { scale: [1, 1.5, 1] } : {}
+                    }
+                  >
+                    {clue.found ? "✅" : ""}
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
@@ -354,13 +408,56 @@ export default function Game({ onQuit }) {
             >
               Restart
             </Button>
+            {/* Quit + Leaderboard buttons */}
+
             <Button
-              onClick={onQuit}
+              onClick={() =>
+                setShowLeaderboard({ open: true, autoClose: true })
+              } // Quit → autoClose
               className="bg-red-600 hover:bg-red-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold"
             >
               Quit
             </Button>
+
+            <Button
+              onClick={() =>
+                setShowLeaderboard({ open: true, autoClose: false })
+              } // Leaderboard → manual
+              className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold"
+            >
+              🏆 Leaderboard
+            </Button>
           </div>
+
+          {showLeaderboard.open && (
+            <div className="fixed inset-0 backdrop-blur-md bg-white/20 border border-white/30 flex items-center justify-center z-50">
+              <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] max-w-3xl relative">
+                {/* Close Button */}
+                <button
+                  onClick={() => {
+                    setShowLeaderboard({ open: false, autoClose: false });
+                    if (showLeaderboard.autoClose) {
+                      onQuit();
+                    }
+                  }}
+                  className="absolute top-3 right-3 text-gray-600 hover:text-red-600 text-xl font-bold"
+                >
+                  ✕
+                </button>
+
+                {/* Leaderboard Component */}
+                <Leaderboard
+                  autoClose={showLeaderboard.autoClose}
+                  onClose={() => {
+                    setShowLeaderboard({ open: false, autoClose: false });
+                    if (showLeaderboard.autoClose) {
+                      onQuit();
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </motion.div>
       )}
     </div>
