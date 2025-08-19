@@ -19,6 +19,7 @@ import clickSoundFile from "../sounds/mixkit-fast-double-click-on-mouse-275.wav"
 import lvlSelect from "../sounds/mixkit-sci-fi-click-900.wav";
 import successSoundFile from "../sounds/claps-29454.mp3";
 import failSoundFile from "../sounds/whoosh-cinematic-sound-effect-376889.mp3";
+import Leaderboard from "./LeaderBoard";
 
 export default function Game({ onQuit }) {
   const [level, setLevel] = useState(null);
@@ -32,6 +33,10 @@ export default function Game({ onQuit }) {
   const [score, setScore] = useState(0);
 
   const imgRef = useRef(null);
+  const [showLeaderboard, setShowLeaderboard] = useState({
+    open: false,
+    autoClose: false,
+  });
 
   // 🎵 Sounds
   const landingMusic = new Howl({
@@ -54,6 +59,10 @@ export default function Game({ onQuit }) {
     hard: { clues: 5, time: 120, bg: hardBg, hints: 3 },
   };
 
+  //leaderboard show
+  const handleLeaderboard = () => {
+    setShowLeaderboard(true);
+  };
   // Load username
   useEffect(() => {
     const savedName = localStorage.getItem("username");
@@ -172,7 +181,8 @@ export default function Game({ onQuit }) {
 
     if (username && level) {
       const timeTaken = levelSettings[level].time - timeLeft;
-      saveBestScore(username, level, score, timeTaken);
+      const finalScore = score + timeLeft; // ✅ add time bonus
+      saveBestScore(username, level, finalScore, timeTaken);
     }
   };
 
@@ -460,13 +470,56 @@ export default function Game({ onQuit }) {
             >
               Restart
             </Button>
+            {/* Quit + Leaderboard buttons */}
+
             <Button
-              onClick={onQuit}
+              onClick={() =>
+                setShowLeaderboard({ open: true, autoClose: true })
+              } // Quit → autoClose
               className="bg-red-600 hover:bg-red-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold"
             >
               Quit
             </Button>
+
+            <Button
+              onClick={() =>
+                setShowLeaderboard({ open: true, autoClose: false })
+              } // Leaderboard → manual
+              className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold"
+            >
+              🏆 Leaderboard
+            </Button>
           </div>
+
+          {showLeaderboard.open && (
+            <div className="fixed inset-0 backdrop-blur-md bg-white/20 border border-white/30 flex items-center justify-center z-50">
+              <div className="bg-white rounded-2xl shadow-2xl p-6 w-[90%] max-w-3xl relative">
+                {/* Close Button */}
+                <button
+                  onClick={() => {
+                    setShowLeaderboard({ open: false, autoClose: false });
+                    if (showLeaderboard.autoClose) {
+                      onQuit();
+                    }
+                  }}
+                  className="absolute top-3 right-3 text-gray-600 hover:text-red-600 text-xl font-bold"
+                >
+                  ✕
+                </button>
+
+                {/* Leaderboard Component */}
+                <Leaderboard
+                  autoClose={showLeaderboard.autoClose}
+                  onClose={() => {
+                    setShowLeaderboard({ open: false, autoClose: false });
+                    if (showLeaderboard.autoClose) {
+                      onQuit();
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </motion.div>
       )}
     </div>
