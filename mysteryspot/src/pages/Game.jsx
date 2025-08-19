@@ -262,6 +262,68 @@ export default function Game({ onQuit }) {
 
       {/* Gameplay */}
       {level && !gameOver && (
+        // <div className="relative w-full h-full flex flex-col p-2 sm:p-4">
+        //   {/* HUD */}
+        //   <div className="flex justify-between items-center text-yellow-200 text-sm md:text-lg font-bold px-2 md:px-6 py-2">
+        //     <span>⏱ {formatTime(timeLeft)}</span>
+        //     <span>
+        //       🔎 {foundClues}/{levelSettings[level].clues}
+        //     </span>
+        //     <span>⭐ {score} pts</span>
+        //     <Button
+        //       onClick={useHint}
+        //       disabled={hintsLeft <= 0}
+        //       className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-600 text-white px-3 py-1 md:px-4 md:py-2 rounded-lg text-sm md:text-base"
+        //     >
+        //       <FaLightbulb /> {hintsLeft}
+        //     </Button>
+        //   </div>
+
+        //   {/* ✅ Hint Popup */}
+        //   {activeHint && (
+        //     <motion.div
+        //       initial={{ opacity: 0, scale: 0.8 }}
+        //       animate={{ opacity: 1, scale: 1 }}
+        //       exit={{ opacity: 0 }}
+        //       className="absolute top-20 left-1/2 transform -translate-x-1/2
+        //                  bg-yellow-200 text-black px-6 py-3 rounded-lg shadow-lg
+        //                  font-bold text-lg z-30"
+        //     >
+        //       💡 Hint: {activeHint}
+        //     </motion.div>
+        //   )}
+
+        //   {/* Game Scene */}
+        //   <div className="relative w-full max-w-6xl h-[87vh] mx-auto aspect-[16/9]">
+        //     <img
+        //       ref={imgRef}
+        //       src={levelSettings[level].bg}
+        //       alt="scene"
+        //       className="absolute inset-0 w-full h-full object-contain cursor-crosshair"
+        //       onClick={handleClick}
+        //     />
+        //     {clues.map((clue) => {
+        //       const img = imgRef.current;
+        //       let top = 0,
+        //         left = 0;
+        //       if (img) {
+        //         const rect = img.getBoundingClientRect();
+        //         top = (clue.yPercent / 100) * rect.height;
+        //         left = (clue.xPercent / 100) * rect.width;
+        //       }
+        //       return (
+        //         <motion.div
+        //           key={clue.id}
+        //           className="absolute w-6 h-6 md:w-10 md:h-10 rounded-full"
+        //           style={{ top, left }}
+        //           animate={activeHint === clue.id ? { scale: [1, 1.5, 1] } : {}}
+        //         >
+        //           {clue.found ? "✅" : ""}
+        //         </motion.div>
+        //       );
+        //     })}
+        //   </div>
+        // </div>
         <div className="relative w-full h-full flex flex-col p-2 sm:p-4">
           {/* HUD */}
           <div className="flex justify-between items-center text-yellow-200 text-sm md:text-lg font-bold px-2 md:px-6 py-2">
@@ -286,42 +348,64 @@ export default function Game({ onQuit }) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               className="absolute top-20 left-1/2 transform -translate-x-1/2 
-                         bg-yellow-200 text-black px-6 py-3 rounded-lg shadow-lg 
-                         font-bold text-lg z-30"
+                   bg-yellow-200 text-black px-6 py-3 rounded-lg shadow-lg 
+                   font-bold text-lg z-30"
             >
               💡 Hint: {activeHint}
             </motion.div>
           )}
 
-          {/* Game Scene */}
-          <div className="relative w-full max-w-6xl h-[87vh] mx-auto aspect-[16/9]">
-            <img
-              ref={imgRef}
-              src={levelSettings[level].bg}
-              alt="scene"
-              className="absolute inset-0 w-full h-full object-contain cursor-crosshair"
-              onClick={handleClick}
-            />
-            {clues.map((clue) => {
-              const img = imgRef.current;
-              let top = 0,
-                left = 0;
-              if (img) {
-                const rect = img.getBoundingClientRect();
-                top = (clue.yPercent / 100) * rect.height;
-                left = (clue.xPercent / 100) * rect.width;
-              }
-              return (
-                <motion.div
-                  key={clue.id}
-                  className="absolute w-6 h-6 md:w-10 md:h-10 rounded-full"
-                  style={{ top, left }}
-                  animate={activeHint === clue.id ? { scale: [1, 1.5, 1] } : {}}
-                >
-                  {clue.found ? "✅" : ""}
-                </motion.div>
-              );
-            })}
+          {/* ✅ Responsive Game Area */}
+          <div className="flex flex-col md:flex-row gap-3 w-full h-[87vh] max-w-6xl mx-auto">
+            {/* 🎯 Clue Name Box */}
+            <div className="bg-black/50 text-yellow-200 rounded-xl p-3 w-40 overflow-y-auto">
+              <h3 className="text-lg font-bold mb-3">🔍 Objects to Find</h3>
+              <ul className="space-y-2">
+                {clues.map((clue) => (
+                  <li
+                    key={clue.id}
+                    className={`flex items-center gap-2 ${
+                      clue.found ? "line-through text-green-400" : ""
+                    }`}
+                  >
+                    {clue.found ? "✅" : "⭕"} {clue.name || "Unknown"}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* 🎯 Game Scene */}
+            <div className="relative flex-1 h-full aspect-[16/9]">
+              <img
+                ref={imgRef}
+                src={levelSettings[level].bg}
+                alt="scene"
+                className="absolute inset-0 w-full h-full object-contain cursor-crosshair"
+                onClick={handleClick}
+              />
+              {clues.map((clue) => {
+                const img = imgRef.current;
+                let top = 0,
+                  left = 0;
+                if (img) {
+                  const rect = img.getBoundingClientRect();
+                  top = (clue.yPercent / 100) * rect.height;
+                  left = (clue.xPercent / 100) * rect.width;
+                }
+                return (
+                  <motion.div
+                    key={clue.id}
+                    className="absolute w-6 h-6 md:w-7 md:h-7 rounded-full"
+                    style={{ top, left }}
+                    animate={
+                      activeHint === clue.id ? { scale: [1, 1.5, 1] } : {}
+                    }
+                  >
+                    {clue.found ? "✅" : ""}
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
